@@ -82,17 +82,17 @@
   }
   .site-header nav a:hover { color: var(--accent); }
   section { padding: 4rem 0; }
-  .reveal {
+  html.js .reveal {
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
-  .reveal.visible {
+  html.js .reveal.visible {
     opacity: 1;
     transform: translateY(0);
   }
   @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
+    html.js .reveal { opacity: 1; transform: none; transition: none; }
   }
   .site-footer {
     border-top: 1px solid var(--border);
@@ -155,7 +155,7 @@
     width: 100%;
     height: auto;
   }
-  .steps h2 {
+  .steps h2, .features h2, .showcase h2 {
     text-align: center;
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     margin-bottom: 2.5rem;
@@ -196,11 +196,6 @@
     font-size: 0.95rem;
   }
   .features { background: var(--surface); }
-  .features h2 {
-    text-align: center;
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    margin-bottom: 2.5rem;
-  }
   .feature-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -227,11 +222,6 @@
     margin: 0;
     color: var(--text-muted);
     font-size: 0.92rem;
-  }
-  .showcase h2 {
-    text-align: center;
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    margin-bottom: 2.5rem;
   }
   .showcase-grid {
     display: grid;
@@ -355,6 +345,7 @@
 </footer>
 
 <script>
+  document.documentElement.classList.add('js');
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
     var io = new IntersectionObserver(function(entries) {
