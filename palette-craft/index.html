@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palette Craft — Turn any photo into a color palette</title>
+<meta name="description" content="Palette Craft turns any photo into a pixel-perfect color palette. Pick a photo, tap to sample colors, save and share your palette. Fully offline, no ads, no tracking.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #6750A4;
+    --accent-light: #9a82db;
+    --bg: #fdfbff;
+    --surface: #f4f0fa;
+    --text: #1c1b1f;
+    --text-muted: #5a5766;
+    --border: #e3ddee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141218;
+      --surface: #211f26;
+      --text: #eae6f0;
+      --text-muted: #b0aab8;
+      --border: #332f3b;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .site-header .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .brand .swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    display: inline-block;
+  }
+  .site-header nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .site-header nav a:hover { color: var(--accent); }
+  section { padding: 4rem 0; }
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .site-footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .site-footer a { color: var(--text-muted); }
+  .site-footer a:hover { color: var(--accent); }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 800px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 1rem;
+  }
+  .hero p.subhead {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin: 0 0 2rem;
+    max-width: 40ch;
+  }
+  .cta-pill {
+    display: inline-block;
+    padding: 0.85rem 1.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1rem;
+    background: var(--border);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    user-select: none;
+  }
+  .phone-frame {
+    width: 260px;
+    margin: 0 auto;
+    border-radius: 36px;
+    border: 10px solid var(--surface);
+    box-shadow: 0 20px 60px rgba(103, 80, 164, 0.25);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .phone-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .steps h2 {
+    text-align: center;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    margin-bottom: 2.5rem;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  @media (max-width: 800px) {
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+  .step-card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin: 0 auto 1rem;
+  }
+  .step-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+  }
+  .step-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .features { background: var(--surface); }
+  .features h2 {
+    text-align: center;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    margin-bottom: 2.5rem;
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 800px) {
+    .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .feature-grid { grid-template-columns: 1fr; }
+  }
+  .feature-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+  .feature-card h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.05rem;
+    color: var(--accent);
+  }
+  .feature-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+  .showcase h2 {
+    text-align: center;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    margin-bottom: 2.5rem;
+  }
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    justify-items: center;
+  }
+  @media (max-width: 800px) {
+    .showcase-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
+  }
+  .showcase-grid .phone-frame { width: 220px; }
+  .showcase-grid figcaption {
+    margin-top: 0.75rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="#" class="brand"><span class="swatch"></span> Palette Craft</a>
+    <nav><a href="privacy-policy.html">Privacy Policy</a></nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div class="reveal">
+      <h1>Turn any photo into a color palette.</h1>
+      <p class="subhead">Pick a photo, tap to sample pixel-perfect colors, and build a palette you can save and share — all in seconds, all on your device.</p>
+      <span class="cta-pill">Coming Soon</span>
+    </div>
+    <div class="reveal phone-frame">
+      <img src="images/home.png" alt="Palette Craft home screen showing a saved color palette" loading="lazy">
+    </div>
+  </div>
+</section>
+<section class="steps">
+  <div class="wrap reveal">
+    <h2>How it works</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Pick a photo</h3>
+        <p>Choose an image from your gallery or snap one with your camera.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Tap to sample colors</h3>
+        <p>Tap anywhere on the photo to pick pixel-perfect colors, one at a time.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Save &amp; share</h3>
+        <p>Build a palette from your picks, save it, and share it with a tap.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="features">
+  <div class="wrap reveal">
+    <h2>Why Palette Craft</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Pixel-perfect picking</h3>
+        <p>Tap exactly the pixel you want — no guessing, no averaging.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Fully offline</h3>
+        <p>Everything runs on your device. Your photos never leave your phone.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Unlimited palettes</h3>
+        <p>Save as many palettes as you like, all stored locally.</p>
+      </div>
+      <div class="feature-card">
+        <h3>One-tap share</h3>
+        <p>Send a palette to any app you already use.</p>
+      </div>
+      <div class="feature-card">
+        <h3>No ads, no tracking</h3>
+        <p>No analytics, no accounts, no data collection. Ever.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Light &amp; dark theme</h3>
+        <p>Looks right whether you prefer light or dark mode.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="showcase">
+  <div class="wrap reveal">
+    <h2>See it in action</h2>
+    <div class="showcase-grid">
+      <figure>
+        <div class="phone-frame"><img src="images/home.png" alt="Home screen with saved palettes" loading="lazy"></div>
+        <figcaption>Your saved palettes</figcaption>
+      </figure>
+      <figure>
+        <div class="phone-frame"><img src="images/editor.png" alt="Editor screen picking colors from a photo" loading="lazy"></div>
+        <figcaption>Pixel-perfect picking</figcaption>
+      </figure>
+      <figure>
+        <div class="phone-frame"><img src="images/detail.png" alt="Palette detail screen" loading="lazy"></div>
+        <figcaption>Palette details</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; 2026 Palette Craft. Made by Shuvam Koirala.</span>
+    <a href="privacy-policy.html">Privacy Policy</a>
+  </div>
+</footer>
+
+<script>
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && revealEls.length) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function(el) { el.classList.add('visible'); });
+  }
+</script>
+
+</body>
+</html>
