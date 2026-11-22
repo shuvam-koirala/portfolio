@@ -1,6 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { site } from '../data/site';
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+import heroShot from '../assets/palette-craft-home.png';
 ---
 <section id="hero" class="hero">
   <div class="wrap hero-grid">
@@ -19,11 +20,12 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
     </div>
     <div class="hero-visual">
       <div class="phone">
-        <img
-          src={`${base}palette-craft/images/home.png`}
+        <Image
+          src={heroShot}
           alt="Palette Craft home screen showing saved colour palettes"
-          width="360"
-          height="780"
+          widths={[260, 520]}
+          sizes="(max-width: 800px) 70vw, 260px"
+          format="webp"
           loading="eager"
           fetchpriority="high"
         />
@@ -82,7 +84,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   .phone img {
     width: 100%;
     border-radius: 27px;
-    aspect-ratio: 360 / 780;
+    aspect-ratio: 1080 / 2400;
     object-fit: cover;
     background: var(--surface);
   }

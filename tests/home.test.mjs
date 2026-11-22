@@ -27,7 +27,6 @@ test('test_payments_featured', () => {
 test('test_projects_rendered', () => {
   for (const t of ['Palette Craft', 'MQTT', 'Downloader', 'Flavor', 'MVVM', 'PDF']) assert.match(h(), new RegExp(t, 'i'));
   assert.match(h(), /Coming soon/i);
-  assert.match(h(), /src="\/portfolio\/palette-craft\/images\/home\.png"/);
 });
 
 test('test_experience_listed', () => {
@@ -58,3 +57,15 @@ function require_css() {
   const d = 'dist/_astro';
   return fs.existsSync(d) ? fs.readdirSync(d).filter((f) => f.endsWith('.css')).map((f) => fs.readFileSync(`${d}/${f}`, 'utf8')).join('') : '';
 }
+
+test('test_hero_image_optimized', () => {
+  const img = h().match(/<section[^>]*id="hero"[\s\S]*?<img[^>]*>/)[0];
+  assert.match(img, /src="\/portfolio\/_astro\/[^"]+\.webp"/);
+  assert.match(img, /srcset="[^"]+\.webp \d+w/);
+  assert.match(img, /fetchpriority="high"/);
+});
+
+test('test_no_render_blocking_external_fonts', () => {
+  assert.doesNotMatch(h(), /fonts\.googleapis\.com/);
+  assert.match(h(), /rel="preload"[^>]*as="font"|as="font"[^>]*rel="preload"/);
+});

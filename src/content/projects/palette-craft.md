@@ -7,5 +7,5 @@ featured: true
 order: 1
 links:
   page: palette-craft/
-image: palette-craft/images/home.png
+image: ../../assets/palette-craft-home.png
 ---

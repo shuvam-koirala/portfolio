@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 interface Props {
   project: CollectionEntry<'projects'>;
 }
@@ -11,7 +12,7 @@ const statusText = { shipped: 'Live', 'coming-soon': 'Coming soon', demo: 'Open 
 <article class:list={['project', 'reveal', { featured: d.featured }]}>
   {d.featured && d.image && (
     <div class="shot">
-      <img src={`${base}${d.image}`} alt={`${d.title} screenshot`} width="360" height="780" loading="lazy" />
+      <Image src={d.image} alt={`${d.title} screenshot`} widths={[200, 400]} sizes="200px" format="webp" loading="lazy" />
     </div>
   )}
   <div class="body">
@@ -56,7 +57,7 @@ const statusText = { shipped: 'Live', 'coming-soon': 'Coming soon', demo: 'Open 
   }
   .shot img {
     border-radius: 22px;
-    aspect-ratio: 360 / 780;
+    aspect-ratio: 1080 / 2400;
     object-fit: cover;
   }
   .status {

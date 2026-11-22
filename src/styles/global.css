@@ -12,8 +12,8 @@
   --gradient-button: linear-gradient(135deg, #0553b1 0%, #0262cc 100%);
   --shadow: 0 18px 40px rgba(5, 83, 177, 0.16);
   --radius: 16px;
-  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --serif: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color-scheme: light dark;
 }
 
