@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+const projects = (await getCollection('projects')).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.order - b.data.order,
+);
+---
+<section id="work">
+  <div class="wrap">
+    <span class="label">My own work</span>
+    <h2 class="reveal">Things I build on my own time.</h2>
+    <p class="muted lede reveal">An app of my own, and open-source Flutter projects that show how I solve specific problems.</p>
+    <div class="grid">
+      {projects.map((p) => <ProjectCard project={p} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lede {
+    max-width: 38rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+</style>

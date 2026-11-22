@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import WhyMe from '../components/WhyMe.astro';
+import Work from '../components/Work.astro';
+import Experience from '../components/Experience.astro';
+import Skills from '../components/Skills.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+---
+<Base title={`${site.name} · Freelance ${site.role}`} description={site.description}>
+  <Hero />
+  <Services />
+  <WhyMe />
+  <Work />
+  <Experience />
+  <Skills />
+  <Contact />
+  <Footer slot="footer" />
+</Base>

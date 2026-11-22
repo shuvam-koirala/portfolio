@@ -1,0 +1,51 @@
+---
+import { services } from '../data/site';
+---
+<section id="services">
+  <div class="wrap">
+    <span class="label">What I can build for you</span>
+    <h2 class="reveal">From idea to app store, or rescue for the app you already have.</h2>
+    <div class="grid">
+      {services.map((s, i) => (
+        <article class="card reveal">
+          <span class="num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{s.title}</h3>
+          <p class="muted">{s.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  h2 {
+    max-width: 24ch;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+  }
+  .card p {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .num {
+    display: inline-block;
+    font: 600 0.85rem/1 var(--sans);
+    color: var(--label);
+    margin-bottom: 1.2rem;
+  }
+</style>

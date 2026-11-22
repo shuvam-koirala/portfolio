@@ -1,0 +1,116 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+const { project } = Astro.props;
+const d = project.data;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const statusText = { shipped: 'Live', 'coming-soon': 'Coming soon', demo: 'Open source' }[d.status];
+---
+<article class:list={['project', 'reveal', { featured: d.featured }]}>
+  {d.featured && d.image && (
+    <div class="shot">
+      <img src={`${base}${d.image}`} alt={`${d.title} screenshot`} width="360" height="780" loading="lazy" />
+    </div>
+  )}
+  <div class="body">
+    <span class="status">{statusText}</span>
+    <h3>{d.title}</h3>
+    <p class="muted">{d.summary}</p>
+    <ul class="tags">{d.tags.map((t) => <li>{t}</li>)}</ul>
+    <div class="links">
+      {d.links.page && <a href={`${base}${d.links.page}`}>See the app <span aria-hidden="true">→</span></a>}
+      {d.links.store && <a href={d.links.store}>Get it <span aria-hidden="true">→</span></a>}
+      {d.links.github && <a href={d.links.github}>View code on GitHub <span aria-hidden="true">→</span></a>}
+    </div>
+  </div>
+</article>
+
+<style>
+  .project {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .project.featured {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    gap: clamp(1.5rem, 5vw, 3.5rem);
+    align-items: center;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+  }
+  .featured h3 {
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+  }
+  .shot {
+    flex: 0 0 auto;
+    width: min(200px, 40%);
+    padding: 7px;
+    border-radius: 28px;
+    background: var(--gradient);
+    box-shadow: var(--shadow);
+  }
+  .shot img {
+    border-radius: 22px;
+    aspect-ratio: 360 / 780;
+    object-fit: cover;
+  }
+  .status {
+    display: inline-block;
+    font: 600 0.75rem/1 var(--sans);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--label);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.35rem 0.65rem;
+    margin-bottom: 0.9rem;
+  }
+  .body p {
+    font-size: 0.98rem;
+  }
+  .tags {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tags li {
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.2rem 0.65rem;
+  }
+  .links {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .links a {
+    text-decoration: none;
+  }
+  .links a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 640px) {
+    .project.featured {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .shot {
+      width: min(220px, 70%);
+      align-self: center;
+    }
+  }
+</style>

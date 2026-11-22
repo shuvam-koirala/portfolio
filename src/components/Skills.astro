@@ -1,0 +1,58 @@
+---
+import { skills } from '../data/site';
+---
+<section id="skills">
+  <div class="wrap">
+    <span class="label">Skills</span>
+    <h2 class="reveal">The tools I work with.</h2>
+    <div class="rows">
+      <div class="row reveal">
+        <p class="row-title">Core</p>
+        <ul class="chips">{skills.core.map((s) => <li class="strong">{s}</li>)}</ul>
+      </div>
+      <div class="row reveal">
+        <p class="row-title">Also</p>
+        <ul class="chips">{skills.supporting.map((s) => <li>{s}</li>)}</ul>
+      </div>
+      <div class="row reveal">
+        <p class="row-title">Currently growing into</p>
+        <ul class="chips">{skills.growingInto.map((s) => <li class="growing">{s}</li>)}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rows {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .row-title {
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+  }
+  .chips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chips li {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 0.4rem 0.95rem;
+    font-size: 0.95rem;
+  }
+  .chips li.strong {
+    font-weight: 500;
+  }
+  .chips li.growing {
+    border-style: dashed;
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+import { proofPoints, site } from '../data/site';
+---
+<section id="why">
+  <div class="wrap why-grid">
+    <div>
+      <span class="label">Why work with me</span>
+      <h2 class="reveal">Five years of apps that real people depend on.</h2>
+      <p class="muted reveal">{site.overlap}</p>
+    </div>
+    <ul class="points">
+      {proofPoints.map((p) => <li class="reveal">{p}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .points li {
+    position: relative;
+    padding: 1rem 0 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 1.05rem;
+  }
+  .points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.55rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gradient);
+  }
+  @media (max-width: 800px) {
+    .why-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

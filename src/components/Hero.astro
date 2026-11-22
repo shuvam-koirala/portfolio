@@ -1,0 +1,101 @@
+---
+import { site } from '../data/site';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<section id="hero" class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="label">{site.name} · {site.role}</span>
+      <h1>{site.headline.lead} <span class="gradient-text">{site.headline.highlight}</span></h1>
+      <p class="intro muted">{site.intro}</p>
+      <p class="where">{site.location} <span class="tz">({site.timezone})</span>, working with clients worldwide.</p>
+      <div class="actions">
+        <a class="btn-primary" href={`mailto:${site.email}?subject=${encodeURIComponent('New app project')}`}>
+          {site.cta} <span aria-hidden="true">→</span>
+        </a>
+        <a class="link-quiet" href={site.linkedin} rel="me">LinkedIn</a>
+        <a class="link-quiet" href={site.github} rel="me">GitHub</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone">
+        <img
+          src={`${base}palette-craft/images/home.png`}
+          alt="Palette Craft home screen showing saved colour palettes"
+          width="360"
+          height="780"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <p class="caption muted">Palette Craft, my own app</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(3rem, 9vw, 7rem);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  h1 {
+    font-size: clamp(2.4rem, 5.6vw, 4.1rem);
+    line-height: 1.07;
+    margin-bottom: 1.4rem;
+    max-width: 14ch;
+  }
+  .intro {
+    font-size: 1.2rem;
+    max-width: 34rem;
+  }
+  .where {
+    font-size: 0.98rem;
+    color: var(--muted);
+  }
+  .tz {
+    white-space: nowrap;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .phone {
+    width: min(260px, 70vw);
+    padding: 10px;
+    border-radius: 36px;
+    background: var(--gradient);
+    box-shadow: var(--shadow);
+  }
+  .phone img {
+    width: 100%;
+    border-radius: 27px;
+    aspect-ratio: 360 / 780;
+    object-fit: cover;
+    background: var(--surface);
+  }
+  .caption {
+    font-size: 0.85rem;
+    margin: 1rem 0 0;
+  }
+  @media (max-width: 800px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-visual {
+      order: 2;
+    }
+  }
+</style>
